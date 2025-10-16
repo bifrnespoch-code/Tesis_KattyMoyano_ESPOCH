@@ -1,0 +1,1124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== ASSETS ==================== -->
+    
+    <!-- Assets Backend
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/herbario_espoch/static/src/css/herbario_backend.css"/>
+            <script type="text/javascript" src="/herbario_espoch/static/src/js/filters.js"/>
+            <script type="text/javascript" src="/herbario_espoch/static/src/js/gallery.js"/>
+            <script type="text/javascript" src="/herbario_espoch/static/src/js/maps.js"/>
+        </xpath>
+    </template>
+
+    Assets Frontend
+    <template id="assets_frontend" inherit_id="web.assets_frontend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/herbario_espoch/static/src/css/herbario_frontend.css"/>
+            <script type="text/javascript" src="/herbario_espoch/static/src/js/filters.js"/>
+            <script type="text/javascript" src="/herbario_espoch/static/src/js/gallery.js"/>
+            <script type="text/javascript" src="/herbario_espoch/static/src/js/maps.js"/>
+        </xpath>
+    </template>-->
+
+    <!-- ==================== PÁGINA PRINCIPAL ==================== -->
+    <template id="herbario_home" name="Herbario Virtual - Inicio">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <!-- Hero Section -->
+                <section class="s_banner parallax pt96 pb96" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 offset-lg-2 text-center text-white">
+                                <h1 class="display-1 mb-4">Herbario Virtual ESPOCH</h1>
+                                <p class="lead mb-5">
+                                    Explora nuestra colección científica de especímenes botánicos con información 
+                                    detallada, geolocalización y acceso público a través de tecnología QR.
+                                </p>
+                                <a href="/herbario/repositorio" class="btn btn-lg btn-light mr-3">
+                                    <i class="fa fa-search"/> Explorar Repositorio
+                                </a>
+                                <a href="/herbario/galeria" class="btn btn-lg btn-outline-light">
+                                    <i class="fa fa-camera"/> Ver Galería
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Estadísticas Rápidas -->
+                <section class="pt64 pb64 bg-light">
+                    <div class="container">
+                        <h2 class="text-center mb-5">Nuestra Colección en Números</h2>
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <i class="fa fa-leaf fa-4x text-success mb-3"/>
+                                        <h2 class="display-4 mb-0" t-esc="total_specimens or 0"/>
+                                        <p class="text-muted mb-0">Especímenes</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <i class="fa fa-sitemap fa-4x text-primary mb-3"/>
+                                        <h2 class="display-4 mb-0" t-esc="total_families or 0"/>
+                                        <p class="text-muted mb-0">Familias</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <i class="fa fa-map-marker fa-4x text-danger mb-3"/>
+                                        <h2 class="display-4 mb-0" t-esc="total_locations or 0"/>
+                                        <p class="text-muted mb-0">Ubicaciones</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <i class="fa fa-camera fa-4x text-warning mb-3"/>
+                                        <h2 class="display-4 mb-0" t-esc="total_images or 0"/>
+                                        <p class="text-muted mb-0">Imágenes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Especímenes Recientes -->
+                <section class="pt64 pb64">
+                    <div class="container">
+                        <h2 class="text-center mb-5">Especímenes Recientemente Agregados</h2>
+                        <div class="row">
+                            <t t-foreach="recent_specimens" t-as="specimen">
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100 shadow-sm hover-shadow">
+                                        <t t-if="specimen.primary_image">
+                                            <img class="card-img-top" 
+                                                 t-att-src="'data:image/png;base64,' + specimen.primary_image.decode('utf-8')" 
+                                                 t-att-alt="specimen.nombre_cientifico"
+                                                 style="height: 250px; object-fit: cover;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                                                 style="height: 250px;">
+                                                <i class="fa fa-leaf fa-5x text-muted"/>
+                                            </div>
+                                        </t>
+                                        <div class="card-body">
+                                            <h5 class="card-title font-italic mb-2" t-esc="specimen.nombre_cientifico"/>
+                                            <p class="card-text small">
+                                                <strong>Código:</strong> <t t-esc="specimen.codigo_herbario"/><br/>
+                                                <strong>Familia:</strong> <t t-esc="specimen.familia"/><br/>
+                                                <strong>Género:</strong> <t t-esc="specimen.genero"/>
+                                            </p>
+                                            <a t-attf-href="/herbario/specimen/#{specimen.id}" 
+                                               class="btn btn-sm btn-primary btn-block">
+                                                <i class="fa fa-eye"/> Ver Detalles
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="/herbario/repositorio" class="btn btn-primary btn-lg">
+                                <i class="fa fa-search"/> Ver Todos los Especímenes
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Llamado a la Acción -->
+                <section class="pt64 pb64 bg-primary text-white">
+                    <div class="container text-center">
+                        <h2 class="mb-4">¿Buscas un Espécimen Específico?</h2>
+                        <p class="lead mb-4">
+                            Utiliza nuestros filtros avanzados por familia, especie, país, provincia y colector
+                        </p>
+                        <a href="/herbario/repositorio" class="btn btn-lg btn-light">
+                            <i class="fa fa-filter"/> Buscar con Filtros
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================== PÁGINA REPOSITORIO CON FILTROS ==================== -->
+    <template id="herbario_repository" name="Repositorio de Especímenes">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="pt32 pb32 bg-light">
+                    <div class="container">
+                        <h1 class="text-center mb-3">Repositorio de Especímenes</h1>
+                        <p class="text-center text-muted">
+                            Explore nuestra colección completa con filtros avanzados
+                        </p>
+                    </div>
+                </section>
+
+                <section class="pt32 pb64">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Panel de Filtros Lateral -->
+                            <div class="col-md-3">
+                                <div class="card sticky-top" style="top: 80px;">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0"><i class="fa fa-filter"/> Filtros de Búsqueda</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="filterForm" method="get" action="/herbario/repositorio">
+                                            <!-- Búsqueda General -->
+                                            <div class="form-group">
+                                                <label for="search"><i class="fa fa-search"/> Búsqueda</label>
+                                                <input type="text" 
+                                                       class="form-control" 
+                                                       id="search" 
+                                                       name="search" 
+                                                       placeholder="Nombre científico..."
+                                                       t-att-value="search or ''"/>
+                                            </div>
+
+                                            <!-- Filtro por Familia -->
+                                            <div class="form-group">
+                                                <label for="familia"><i class="fa fa-sitemap"/> Familia</label>
+                                                <select class="form-control" id="familia" name="familia">
+                                                    <option value="">Todas las familias</option>
+                                                    <t t-foreach="families" t-as="fam">
+                                                        <option t-att-value="fam" 
+                                                                t-att-selected="'selected' if familia == fam else None"
+                                                                t-esc="fam"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <!-- Filtro por Género -->
+                                            <div class="form-group">
+                                                <label for="genero"><i class="fa fa-leaf"/> Género</label>
+                                                <select class="form-control" id="genero" name="genero">
+                                                    <option value="">Todos los géneros</option>
+                                                    <t t-foreach="genera" t-as="gen">
+                                                        <option t-att-value="gen" 
+                                                                t-att-selected="'selected' if genero == gen else None"
+                                                                t-esc="gen"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <!-- Filtro por País -->
+                                            <div class="form-group">
+                                                <label for="pais"><i class="fa fa-globe"/> País</label>
+                                                <select class="form-control" id="pais" name="pais">
+                                                    <option value="">Todos los países</option>
+                                                    <t t-foreach="countries" t-as="country">
+                                                        <option t-att-value="country" 
+                                                                t-att-selected="'selected' if pais == country else None"
+                                                                t-esc="country"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <!-- Filtro por Provincia -->
+                                            <div class="form-group">
+                                                <label for="provincia"><i class="fa fa-map"/> Provincia</label>
+                                                <select class="form-control" id="provincia" name="provincia">
+                                                    <option value="">Todas las provincias</option>
+                                                    <t t-foreach="provinces" t-as="prov">
+                                                        <option t-att-value="prov" 
+                                                                t-att-selected="'selected' if provincia == prov else None"
+                                                                t-esc="prov"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <!-- Filtro por Localidad -->
+                                            <div class="form-group">
+                                                <label for="localidad"><i class="fa fa-map-marker"/> Localidad</label>
+                                                <input type="text" 
+                                                       class="form-control" 
+                                                       id="localidad" 
+                                                       name="localidad" 
+                                                       placeholder="Nombre de localidad..."
+                                                       t-att-value="localidad or ''"/>
+                                            </div>
+
+                                            <!-- Filtro por Colector -->
+                                            <div class="form-group">
+                                                <label for="colector"><i class="fa fa-user"/> Colector</label>
+                                                <select class="form-control" id="colector" name="colector">
+                                                    <option value="">Todos los colectores</option>
+                                                    <t t-foreach="collectors" t-as="col">
+                                                        <option t-att-value="col" 
+                                                                t-att-selected="'selected' if colector == col else None"
+                                                                t-esc="col"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <!-- Filtro por Autor Científico -->
+                                            <div class="form-group">
+                                                <label for="autor"><i class="fa fa-graduation-cap"/> Autor Científico</label>
+                                                <input type="text" 
+                                                       class="form-control" 
+                                                       id="autor" 
+                                                       name="autor" 
+                                                       placeholder="Nombre del autor..."
+                                                       t-att-value="autor or ''"/>
+                                            </div>
+
+                                            <!-- Botones de Acción -->
+                                            <button type="submit" class="btn btn-primary btn-block mb-2">
+                                                <i class="fa fa-search"/> Aplicar Filtros
+                                            </button>
+                                            <a href="/herbario/repositorio" class="btn btn-secondary btn-block">
+                                                <i class="fa fa-refresh"/> Limpiar Filtros
+                                            </a>
+
+                                            <!-- Contador de Resultados -->
+                                            <div class="mt-3 p-3 bg-light rounded text-center">
+                                                <strong class="text-primary">
+                                                    <t t-esc="total_results or 0"/> resultados encontrados
+                                                </strong>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Listado de Especímenes -->
+                            <div class="col-md-9">
+                                <!-- Barra de Opciones -->
+                                <div class="mb-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="text-muted">
+                                            Mostrando <strong><t t-esc="len(specimens)"/></strong> especímenes
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <select class="form-control" id="sortBy" name="sort" onchange="this.form.submit()">
+                                            <option value="date_desc">Más recientes primero</option>
+                                            <option value="date_asc">Más antiguos primero</option>
+                                            <option value="name_asc">Nombre A-Z</option>
+                                            <option value="name_desc">Nombre Z-A</option>
+                                            <option value="code_asc">Por código</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Grid de Especímenes -->
+                                <div class="row">
+                                    <t t-if="not specimens">
+                                        <div class="col-12">
+                                            <div class="alert alert-info text-center py-5">
+                                                <i class="fa fa-info-circle fa-4x mb-3"/>
+                                                <h4>No se encontraron especímenes</h4>
+                                                <p class="mb-0">Intente modificar los criterios de búsqueda</p>
+                                            </div>
+                                        </div>
+                                    </t>
+
+                                    <t t-foreach="specimens" t-as="specimen">
+                                        <div class="col-md-6 col-lg-4 mb-4">
+                                            <div class="card h-100 shadow-sm hover-shadow">
+                                                <!-- Imagen del Espécimen -->
+                                                <div style="height: 220px; overflow: hidden; position: relative;">
+                                                    <t t-if="specimen.primary_image">
+                                                        <img class="card-img-top" 
+                                                             t-att-src="'data:image/png;base64,' + specimen.primary_image.decode('utf-8')" 
+                                                             t-att-alt="specimen.nombre_cientifico"
+                                                             style="height: 100%; width: 100%; object-fit: cover;"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center h-100">
+                                                            <i class="fa fa-leaf fa-5x text-muted"/>
+                                                        </div>
+                                                    </t>
+                                                    <!-- Badge de Estado -->
+                                                    <span class="badge badge-success" 
+                                                          style="position: absolute; top: 10px; right: 10px;"
+                                                          t-esc="specimen.status"/>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <h5 class="card-title font-italic mb-2" t-esc="specimen.nombre_cientifico"/>
+                                                    <p class="card-text small text-muted mb-3">
+                                                        <strong>Código:</strong> <t t-esc="specimen.codigo_herbario"/><br/>
+                                                        <strong>Familia:</strong> <t t-esc="specimen.familia"/><br/>
+                                                        <strong>Género:</strong> <t t-esc="specimen.genero"/>
+                                                    </p>
+                                                    
+                                                    <t t-if="specimen.primary_location">
+                                                        <p class="card-text small">
+                                                            <i class="fa fa-map-marker text-danger"/> 
+                                                            <t t-esc="specimen.primary_location"/>
+                                                        </p>
+                                                    </t>
+
+                                                    <a t-attf-href="/herbario/specimen/#{specimen.id}" 
+                                                       class="btn btn-sm btn-primary btn-block">
+                                                        <i class="fa fa-eye"/> Ver Detalles Completos
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Paginación -->
+                                <t t-if="pager">
+                                    <div class="d-flex justify-content-center mt-5">
+                                        <t t-call="website.pager">
+                                            <t t-set="classname">pagination-lg</t>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- Continuará en el siguiente mensaje con: Detalle Espécimen, Galería, Estadísticas, About -->
+    <!-- ==================== DETALLE DEL ESPÉCIMEN ==================== -->
+    <template id="herbario_specimen_detail" name="Detalle del Espécimen">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <!-- Breadcrumb -->
+                <section class="pt16 pb16 bg-light">
+                    <div class="container">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb bg-transparent mb-0">
+                                <li class="breadcrumb-item"><a href="/herbario">Herbario</a></li>
+                                <li class="breadcrumb-item"><a href="/herbario/repositorio">Repositorio</a></li>
+                                <li class="breadcrumb-item active" t-esc="specimen.nombre_cientifico"/>
+                            </ol>
+                        </nav>
+                    </div>
+                </section>
+
+                <section class="pt32 pb64">
+                    <div class="container">
+                        <div class="row">
+                            <!-- Columna Izquierda: Imágenes -->
+                            <div class="col-md-6">
+                                <!-- Imagen Principal -->
+                                <div class="mb-4">
+                                    <t t-if="specimen.primary_image">
+                                        <img class="img-fluid rounded shadow" 
+                                             t-att-src="'data:image/png;base64,' + specimen.primary_image.decode('utf-8')" 
+                                             t-att-alt="specimen.nombre_cientifico"
+                                             style="width: 100%; cursor: pointer;"
+                                             data-toggle="modal" 
+                                             data-target="#imageModal"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                                             style="height: 400px;">
+                                            <i class="fa fa-leaf fa-5x text-muted"/>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Galería de Miniaturas -->
+                                <t t-if="specimen.image_ids">
+                                    <h6 class="mb-3">Más Imágenes (<t t-esc="len(specimen.image_ids)"/>)</h6>
+                                    <div class="row">
+                                        <t t-foreach="specimen.image_ids[:8]" t-as="img">
+                                            <div class="col-3 mb-2">
+                                                <img class="img-fluid img-thumbnail" 
+                                                     t-att-src="'data:image/png;base64,' + img.thumbnail.decode('utf-8')" 
+                                                     t-att-alt="img.description or 'Imagen'"
+                                                     style="cursor: pointer; height: 80px; width: 100%; object-fit: cover;"
+                                                     data-toggle="modal" 
+                                                     data-target="#imageModal"/>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+
+                                <!-- Código QR -->
+                                <t t-if="specimen.qr_code_id">
+                                    <div class="card mt-4">
+                                        <div class="card-body text-center">
+                                            <h6 class="mb-3"><i class="fa fa-qrcode"/> Código QR del Espécimen</h6>
+                                            <t t-if="specimen.qr_code_id and specimen.qr_code_id.qr_image">
+                                                <img class="img-fluid" 
+                                                    t-att-src="'data:image/png;base64,' + specimen.qr_code_id.qr_image.decode('utf-8')" 
+                                                    style="max-width: 200px;"/>
+                                            </t>
+                                            <t t-else="">
+                                                <p>No se encontró imagen de QR.</p>
+                                            </t>
+                                            <p class="small text-muted mt-2">Escanea para acceso rápido</p>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Columna Derecha: Información -->
+                            <div class="col-md-6">
+                                <!-- Título -->
+                                <div class="mb-4">
+                                    <h1 class="font-italic mb-2" t-esc="specimen.nombre_cientifico"/>
+                                    <h5 class="text-muted" t-esc="specimen.autor_cientifico"/>
+                                    <span class="badge badge-lg badge-success" t-esc="specimen.status"/>
+                                </div>
+
+                                <!-- Taxonomía -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0"><i class="fa fa-sitemap"/> Taxonomía</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-sm table-borderless mb-0">
+                                            <tr>
+                                                <td class="font-weight-bold" width="40%">Código:</td>
+                                                <td><strong t-esc="specimen.codigo_herbario"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">Familia:</td>
+                                                <td t-esc="specimen.familia"/>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">Género:</td>
+                                                <td t-esc="specimen.genero"/>
+                                            </tr>
+                                            <tr t-if="specimen.especie">
+                                                <td class="font-weight-bold">Especie:</td>
+                                                <td t-esc="specimen.especie"/>
+                                            </tr>
+                                            <tr t-if="specimen.determinado_por">
+                                                <td class="font-weight-bold">Determinado por:</td>
+                                                <td t-esc="specimen.determinado_por"/>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Descripción -->
+                                <t t-if="specimen.descripcion_especie">
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-info text-white">
+                                            <h5 class="mb-0"><i class="fa fa-info-circle"/> Descripción</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p t-esc="specimen.descripcion_especie"/>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Fenología -->
+                                <t t-if="specimen.fenologia">
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-success text-white">
+                                            <h5 class="mb-0"><i class="fa fa-calendar"/> Fenología</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p t-esc="specimen.fenologia"/>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Ubicaciones de Recolección -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-danger text-white">
+                                        <h5 class="mb-0"><i class="fa fa-map-marker"/> Ubicaciones de Recolección</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <t t-if="specimen.collection_site_ids">
+                                            <t t-foreach="specimen.collection_site_ids" t-as="location">
+                                                <div class="mb-3 pb-3" t-att-class="'border-bottom' if not location_last else ''">
+                                                    <h6 class="text-primary">
+                                                        <t t-if="location.is_primary">
+                                                            <i class="fa fa-star text-warning"/> Ubicación Principal
+                                                        </t>
+                                                        <t t-else="">
+                                                            Ubicación <t t-esc="location_index + 1"/>
+                                                        </t>
+                                                    </h6>
+                                                    <table class="table table-sm table-borderless mb-2">
+                                                        <tr>
+                                                            <td class="font-weight-bold" width="35%">Colector:</td>
+                                                            <td t-esc="location.colector"/>
+                                                        </tr>
+                                                        <tr t-if="location.fecha_recoleccion">
+                                                            <td class="font-weight-bold">Fecha:</td>
+                                                            <td t-esc="location.fecha_recoleccion"/>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="font-weight-bold">País:</td>
+                                                            <td t-esc="location.pais"/>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="font-weight-bold">Provincia:</td>
+                                                            <td t-esc="location.provincia"/>
+                                                        </tr>
+                                                        <tr t-if="location.localidad">
+                                                            <td class="font-weight-bold">Localidad:</td>
+                                                            <td t-esc="location.localidad"/>
+                                                        </tr>
+                                                        <tr t-if="location.latitud and location.longitud">
+                                                            <td class="font-weight-bold">Coordenadas:</td>
+                                                            <td>
+                                                                <t t-esc="location.latitud"/>, <t t-esc="location.longitud"/>
+                                                                <a t-attf-href="https://www.google.com/maps?q=#{location.latitud},#{location.longitud}" 
+                                                                   target="_blank" 
+                                                                   class="btn btn-xs btn-outline-primary ml-2">
+                                                                    <i class="fa fa-map"/> Ver Mapa
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr t-if="location.altitud">
+                                                            <td class="font-weight-bold">Altitud:</td>
+                                                            <td><t t-esc="location.altitud"/> m.s.n.m.</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <p class="text-muted mb-0">No hay información de ubicación disponible.</p>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Modal para ver imágenes en grande -->
+            <div class="modal fade" id="imageModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Vista de Imagen</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img id="modalImage" class="img-fluid" src="" alt=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================== GALERÍA DE IMÁGENES ==================== -->
+    <template id="herbario_gallery" name="Galería de Imágenes">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="pt32 pb32 bg-light">
+                    <div class="container">
+                        <h1 class="text-center mb-3">Galería de Imágenes</h1>
+                        <p class="text-center text-muted">Explore nuestra colección fotográfica de especímenes</p>
+                    </div>
+                </section>
+
+                <section class="pt32 pb64">
+                    <div class="container-fluid">
+                        <!-- Filtros de Galería -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form method="get" action="/herbario/galeria" class="form-inline justify-content-center">
+                                            <div class="form-group mr-3">
+                                                <input type="text" 
+                                                       class="form-control" 
+                                                       name="search" 
+                                                       placeholder="Buscar por nombre científico..."
+                                                       t-att-value="search or ''"
+                                                       style="width: 300px;"/>
+                                            </div>
+                                            <div class="form-group mr-3">
+                                                <select class="form-control" name="familia">
+                                                    <option value="">Todas las familias</option>
+                                                    <t t-foreach="families" t-as="fam">
+                                                        <option t-att-value="fam" 
+                                                                t-att-selected="'selected' if familia == fam else None"
+                                                                t-esc="fam"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                            <div class="form-group mr-3">
+                                                <select class="form-control" name="tipo_imagen">
+                                                    <option value="">Todos los tipos</option>
+                                                    <option value="general">General</option>
+                                                    <option value="flower">Flor</option>
+                                                    <option value="fruit">Fruto</option>
+                                                    <option value="leaf">Hoja</option>
+                                                    <option value="bark">Corteza</option>
+                                                    <option value="habitat">Hábitat</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-search"/> Buscar
+                                            </button>
+                                            <a href="/herbario/galeria" class="btn btn-secondary ml-2">
+                                                <i class="fa fa-refresh"/> Limpiar
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grid de Imágenes -->
+                        <div class="row">
+                            <t t-if="not images">
+                                <div class="col-12">
+                                    <div class="alert alert-info text-center py-5">
+                                        <i class="fa fa-info-circle fa-4x mb-3"/>
+                                        <h4>No se encontraron imágenes</h4>
+                                        <p class="mb-0">Intente modificar los criterios de búsqueda</p>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <t t-foreach="images" t-as="image">
+                                <div class="col-md-3 col-sm-6 mb-4">
+                                    <div class="card h-100 shadow-sm hover-shadow">
+                                        <div style="height: 250px; overflow: hidden; position: relative;">
+                                            <img class="card-img-top" 
+                                                 t-att-src="'data:image/png;base64,' + image.thumbnail_medium.decode('utf-8')" 
+                                                 t-att-alt="image.description or 'Imagen'"
+                                                 style="height: 100%; width: 100%; object-fit: cover; cursor: pointer;"
+                                                 data-toggle="modal" 
+                                                 data-target="#galleryModal"/>
+                                            <t t-if="image.is_primary">
+                                                <span class="badge badge-warning" 
+                                                      style="position: absolute; top: 10px; left: 10px;">
+                                                    <i class="fa fa-star"/> Principal
+                                                </span>
+                                            </t>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6 class="card-title font-italic mb-2">
+                                                <a t-attf-href="/herbario/specimen/#{image.specimen_id.id}" 
+                                                   class="text-dark"
+                                                   t-esc="image.specimen_id.nombre_cientifico"/>
+                                            </h6>
+                                            <p class="card-text small text-muted mb-1">
+                                                <t t-esc="image.specimen_id.familia"/>
+                                            </p>
+                                            <t t-if="image.description">
+                                                <p class="card-text small" 
+                                                   t-esc="image.description[:60] + '...' if len(image.description) > 60 else image.description"/>
+                                            </t>
+                                        </div>
+                                        <div class="card-footer bg-transparent">
+                                            <small class="text-muted">
+                                                <i class="fa fa-camera"/> <t t-esc="image.photographer or 'Desconocido'"/>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- Paginación -->
+                        <t t-if="pager">
+                            <div class="d-flex justify-content-center mt-5">
+                                <t t-call="website.pager"/>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Modal de Galería -->
+            <div class="modal fade" id="galleryModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Vista de Imagen</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img class="img-fluid" src="" alt=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================== ESTADÍSTICAS ==================== -->
+    <template id="herbario_statistics" name="Estadísticas del Herbario">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="pt32 pb32 bg-light">
+                    <div class="container">
+                        <h1 class="text-center mb-3">Estadísticas del Herbario</h1>
+                        <p class="text-center text-muted">Análisis y visualización de nuestra colección</p>
+                    </div>
+                </section>
+
+                <section class="pt32 pb64">
+                    <div class="container">
+                        <!-- Estadísticas Generales -->
+                        <div class="row mb-5">
+                            <div class="col-md-3 mb-3">
+                                <div class="card text-center h-100 shadow">
+                                    <div class="card-body">
+                                        <i class="fa fa-leaf fa-4x text-success mb-3"/>
+                                        <h2 class="display-4" t-esc="stats.get('total_specimens', 0) or 0"/>
+                                        <p class="text-muted mb-0">Especímenes</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card text-center h-100 shadow">
+                                    <div class="card-body">
+                                        <i class="fa fa-sitemap fa-4x text-primary mb-3"/>
+                                        <h2 class="display-4" t-esc="stats.get('total_families', 0) or 0"/>
+                                        <p class="text-muted mb-0">Familias</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card text-center h-100 shadow">
+                                    <div class="card-body">
+                                        <i class="fa fa-map-marker fa-4x text-danger mb-3"/>
+                                        <h2 class="display-4" t-esc="stats.get('total_locations', 0) or 0"/>
+                                        <p class="text-muted mb-0">Ubicaciones</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card text-center h-100 shadow">
+                                    <div class="card-body">
+                                        <i class="fa fa-users fa-4x text-warning mb-3"/>
+                                        <h2 class="display-4" t-esc="stats.get('total_collectors', 0) or 0"/>
+                                        <p class="text-muted mb-0">Colectores</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gráficos -->
+                        <div class="row">
+                            <!-- Top 10 Familias -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0"><i class="fa fa-bar-chart"/> Top 10 Familias</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="familyChart" height="300"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Distribución por País -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow">
+                                    <div class="card-header bg-success text-white">
+                                        <h5 class="mb-0"><i class="fa fa-globe"/> Distribución por País</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="countryChart" height="300"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mapa de Geolocalización -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card shadow">
+                                    <div class="card-header bg-info text-white">
+                                        <h5 class="mb-0"><i class="fa fa-map"/> Mapa de Distribución</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div id="mapContainer" style="height: 500px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Scripts para Chart.js y Leaflet -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+                
+                <!--<script type="text/javascript">
+                    // Datos pasados desde el controlador
+                    var chartData = {
+                        families: <t t-raw="family_data or '{}'"/>,
+                        countries: <t t-raw="country_data or '{}'"/>,
+                        locations: <t t-raw="location_data or '[]'"/>
+                    };
+                </script>-->
+                <script type="text/javascript">
+                    //<![CDATA[
+                        // Datos pasados desde el controlador
+                        var chartData = {
+                            families: <t t-raw="top_families or '[]'"/>,
+                            provinces: <t t-raw="top_provinces or '[]'"/>,
+                            years: <t t-raw="years_data or '[]'"/>,
+                            locations: <t t-raw="map_locations or '[]'"/>
+                        };
+                        
+                        // Gráfico de familias
+                        var ctxFamily = document.getElementById('familyChart').getContext('2d');
+                        var familyChart = new Chart(ctxFamily, {
+                            type: 'bar',
+                            data: {
+                                labels: chartData.families.map(item => item[0]),
+                                datasets: [{
+                                    label: 'Número de Especímenes',
+                                    data: chartData.families.map(item => item[1]),
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: { beginAtZero: true }
+                                }
+                            }
+                        });
+                    
+                        // Gráfico de provincias
+                        var ctxCountry = document.getElementById('countryChart').getContext('2d');
+                        var countryChart = new Chart(ctxCountry, {
+                            type: 'pie',
+                            data: {
+                                labels: chartData.provinces.map(item => item[0]),
+                                datasets: [{
+                                    label: 'Especímenes por Provincia',
+                                    data: chartData.provinces.map(item => item[1]),
+                                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#C9CBCF', '#FF6384', '#36A2EB', '#FFCE56']
+                                }]
+                            }
+                        });
+                        
+                        // Mapa con Leaflet
+                        var map = L.map('mapContainer').setView([-1.0, -78.5], 6);  // Centrado en Ecuador
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; OpenStreetMap contributors'
+                        }).addTo(map);
+                        
+                        chartData.locations.forEach(function(loc) {
+                            L.marker([loc.lat, loc.lng]).addTo(map)
+                                .bindPopup(loc.name + '<br>' + loc.locality + ', ' + loc.provincia);
+                        });
+                    //]]>
+                </script>
+                
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================== ACERCA DE / ABOUT ==================== -->
+    <template id="herbario_about" name="Acerca del Herbario">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <!-- Hero Section -->
+                <section class="pt96 pb96 text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="container text-center">
+                        <h1 class="display-3 mb-4">Herbario Virtual ESPOCH</h1>
+                        <p class="lead">Preservando el patrimonio botánico para las futuras generaciones</p>
+                    </div>
+                </section>
+
+                <!-- Misión y Visión -->
+                <section class="pt64 pb64">
+                    <div class="container">
+                        <div class="row align-items-center mb-5">
+                            <div class="col-md-6">
+                                <h2 class="mb-4"><i class="fa fa-bullseye text-primary"/> Nuestra Misión</h2>
+                                <p class="lead">
+                                    El Herbario Virtual de la Escuela Superior Politécnica de Chimborazo (ESPOCH) 
+                                    tiene como misión preservar, documentar y difundir el conocimiento sobre la 
+                                    diversidad botánica de Ecuador y la región andina.
+                                </p>
+                                <p>
+                                    A través de tecnología moderna y estándares científicos internacionales, 
+                                    facilitamos el acceso a nuestra colección para investigadores, estudiantes 
+                                    y el público en general, contribuyendo así a la conservación de la biodiversidad 
+                                    y la educación ambiental.
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow-lg border-0">
+                                    <div class="card-body p-5 bg-light">
+                                        <h4 class="mb-4"><i class="fa fa-eye text-success"/> Nuestra Visión</h4>
+                                        <p>
+                                            Ser un referente nacional e internacional en la gestión digital 
+                                            de colecciones botánicas, promoviendo la investigación científica 
+                                            y la conservación de la flora ecuatoriana mediante herramientas 
+                                            tecnológicas accesibles y de código abierto.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Objetivos -->
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <h2 class="text-center mb-5"><i class="fa fa-check-circle text-success"/> Objetivos</h2>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 shadow-sm border-0">
+                                    <div class="card-body text-center p-4">
+                                        <i class="fa fa-database fa-3x text-primary mb-3"/>
+                                        <h5>Preservación Digital</h5>
+                                        <p class="text-muted">
+                                            Digitalizar y preservar especímenes botánicos con fotografías de alta 
+                                            calidad y metadatos completos.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 shadow-sm border-0">
+                                    <div class="card-body text-center p-4">
+                                        <i class="fa fa-graduation-cap fa-3x text-success mb-3"/>
+                                        <h5>Educación e Investigación</h5>
+                                        <p class="text-muted">
+                                            Facilitar el acceso a información botánica para estudiantes, 
+                                            investigadores y la comunidad científica.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 shadow-sm border-0">
+                                    <div class="card-body text-center p-4">
+                                        <i class="fa fa-globe fa-3x text-info mb-3"/>
+                                        <h5>Acceso Universal</h5>
+                                        <p class="text-muted">
+                                            Democratizar el conocimiento botánico mediante plataformas web 
+                                            accesibles y códigos QR.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Características del Sistema -->
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <h2 class="text-center mb-5"><i class="fa fa-cogs text-warning"/> Características del Sistema</h2>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fa fa-qrcode fa-4x text-primary mb-3"/>
+                                    <h5>Códigos QR</h5>
+                                    <p class="text-muted">
+                                        Cada espécimen tiene un código QR único para acceso instantáneo a su 
+                                        información digital completa.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fa fa-map fa-4x text-danger mb-3"/>
+                                    <h5>Geolocalización</h5>
+                                    <p class="text-muted">
+                                        Sistema de mapeo interactivo con coordenadas GPS precisas de los sitios 
+                                        de colección y visualización en mapas.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="text-center">
+                                    <i class="fa fa-filter fa-4x text-success mb-3"/>
+                                    <h5>Búsqueda Avanzada</h5>
+                                    <p class="text-muted">
+                                        Filtros avanzados por familia, especie, género, localidad, colector, 
+                                        país y provincia.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contacto -->
+                        <div class="row mt-5 pt-5 border-top">
+                            <div class="col-12 text-center">
+                                <h3 class="mb-4"><i class="fa fa-envelope"/> Contáctenos</h3>
+                                <p class="lead mb-4">¿Tiene preguntas o desea colaborar con nosotros?</p>
+                                <p class="mb-2">
+                                    <i class="fa fa-envelope text-primary"/> 
+                                    <strong>Email:</strong> herbario@espoch.edu.ec
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fa fa-phone text-success"/> 
+                                    <strong>Teléfono:</strong> +593 (03) 2998-200 Ext. 123
+                                </p>
+                                <p class="mb-4">
+                                    <i class="fa fa-map-marker text-danger"/> 
+                                    <strong>Dirección:</strong> Panamericana Sur Km 1 1/2, Riobamba, Chimborazo, Ecuador
+                                </p>
+                                <div class="mt-4">
+                                    <a href="https://www.espoch.edu.ec" target="_blank" class="btn btn-primary btn-lg mr-2">
+                                        <i class="fa fa-external-link"/> Visitar ESPOCH
+                                    </a>
+                                    <a href="/herbario/repositorio" class="btn btn-outline-primary btn-lg">
+                                        <i class="fa fa-search"/> Explorar Colección
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- ==================== PÁGINA DE MAPA INTERACTIVO ==================== -->
+    <template id="herbario_map" name="Mapa de Distribución">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="pt32 pb32 bg-light">
+                    <div class="container">
+                        <h1 class="text-center mb-3">Mapa de Distribución de Especímenes</h1>
+                        <p class="text-center text-muted">Visualice la ubicación geográfica de nuestra colección</p>
+                    </div>
+                </section>
+
+                <section class="pt16 pb16">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body p-0">
+                                        <div id="fullMapContainer" style="height: 700px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+                
+                <script type="text/javascript">
+                    var mapLocations = <t t-raw="map_locations or '[]'"/>;
+                </script>
+            </div>
+        </t>
+    </template>
+</odoo>

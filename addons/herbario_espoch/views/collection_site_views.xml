@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Árbol -->
+    <record id="view_herbario_collection_site_tree" model="ir.ui.view">
+        <field name="name">herbario.collection.site.tree</field>
+        <field name="model">herbario.collection.site</field>
+        <field name="arch" type="xml">
+            <tree string="Ubicaciones de Recolección">
+                <field name="is_primary" widget="boolean_toggle"/>
+                <field name="numero_coleccion"/>
+                <field name="colector"/>
+                <field name="fecha_recoleccion"/>
+                <field name="pais"/>
+                <field name="provincia"/>
+                <field name="localidad"/>
+                <field name="latitud"/>
+                <field name="longitud"/>
+                <field name="altitud"/>
+                <button name="action_open_in_maps" type="object" icon="fa-map-marker" string="Ver en mapa"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="view_herbario_collection_site_form" model="ir.ui.view">
+        <field name="name">herbario.collection.site.form</field>
+        <field name="model">herbario.collection.site</field>
+        <field name="arch" type="xml">
+            <form string="Ubicación de Recolección">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_in_maps" type="object" class="oe_stat_button" icon="fa-map-marker">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Abrir en</span>
+                                <span class="o_stat_text">Google Maps</span>
+                            </div>
+                        </button>
+                        <button name="action_set_as_primary" type="object" class="oe_stat_button" icon="fa-star">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Marcar</span>
+                                <span class="o_stat_text">Principal</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <group>
+                        <group string="Información de Colección">
+                            <field name="specimen_id"/>
+                            <field name="numero_coleccion"/>
+                            <field name="colector"/>
+                            <field name="fecha_recoleccion"/>
+                            <field name="metodo_recoleccion"/>
+                            <field name="is_primary"/>
+                        </group>
+                        <group string="Ubicación Geográfica">
+                            <field name="pais"/>
+                            <field name="provincia"/>
+                            <field name="canton"/>
+                            <field name="localidad"/>
+                            <field name="vecindad"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Coordenadas GPS">
+                            <field name="latitud"/>
+                            <field name="longitud"/>
+                            <field name="altitud"/>
+                            <field name="maps_url" widget="url" readonly="1"/>
+                        </group>
+                        <group string="Información Calculada">
+                            <field name="ubicacion_completa" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Auditoría">
+                            <group>
+                                <group>
+                                    <field name="created_by" readonly="1"/>
+                                    <field name="created_at" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Kanban -->
+    <record id="view_herbario_collection_site_kanban" model="ir.ui.view">
+        <field name="name">herbario.collection.site.kanban</field>
+        <field name="model">herbario.collection.site</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="numero_coleccion"/>
+                <field name="colector"/>
+                <field name="pais"/>
+                <field name="provincia"/>
+                <field name="localidad"/>
+                <field name="latitud"/>
+                <field name="longitud"/>
+                <field name="is_primary"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <t t-if="record.is_primary.raw_value">
+                                        <i class="fa fa-star text-warning"/> 
+                                    </t>
+                                    <field name="localidad"/>
+                                </strong>
+                                <div><i class="fa fa-map-marker"/> <field name="provincia"/>, <field name="pais"/></div>
+                                <div><i class="fa fa-user"/> <field name="colector"/></div>
+                                <div><i class="fa fa-calendar"/> <field name="fecha_recoleccion"/></div>
+                                <div class="mt-2" t-if="record.latitud.raw_value and record.longitud.raw_value">
+                                    <span class="badge badge-info">Lat: <field name="latitud"/></span>
+                                    <span class="badge badge-info ml-1">Lon: <field name="longitud"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vista de Búsqueda -->
+    <record id="view_herbario_collection_site_search" model="ir.ui.view">
+        <field name="name">herbario.collection.site.search</field>
+        <field name="model">herbario.collection.site</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Ubicaciones">
+                <field name="numero_coleccion"/>
+                <field name="colector"/>
+                <field name="pais"/>
+                <field name="provincia"/>
+                <field name="localidad"/>
+                <field name="specimen_id"/>
+                
+                <filter name="filter_primary" string="Ubicaciones Primarias" domain="[('is_primary', '=', True)]"/>
+                <filter name="filter_con_coordenadas" string="Con Coordenadas GPS" domain="[('latitud', '!=', False), ('longitud', '!=', False)]"/>
+                
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_pais" string="País" context="{'group_by': 'pais'}"/>
+                    <filter name="group_provincia" string="Provincia" context="{'group_by': 'provincia'}"/>
+                    <filter name="group_colector" string="Colector" context="{'group_by': 'colector'}"/>
+                    <filter name="group_fecha" string="Fecha de Recolección" context="{'group_by': 'fecha_recoleccion'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción -->
+    <record id="action_herbario_collection_site" model="ir.actions.act_window">
+        <field name="name">Ubicaciones de Recolección</field>
+        <field name="res_model">herbario.collection.site</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear una nueva ubicación de recolección
+            </p>
+            <p>
+                Registre los sitios donde se han recolectado especímenes con coordenadas GPS precisas.
+            </p>
+        </field>
+    </record>
+</odoo>

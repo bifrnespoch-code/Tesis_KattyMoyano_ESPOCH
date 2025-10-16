@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== CATEGORÍA ==================== -->
+    <record id="module_herbario_category" model="ir.module.category">
+        <field name="name">Herbario ESPOCH</field>
+        <field name="description">Gestión del Herbario Virtual</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- ==================== GRUPOS DE USUARIOS ==================== -->
+    
+    <!-- Grupo: Visitante (solo lectura pública) -->
+    <record id="group_herbario_visitante" model="res.groups">
+        <field name="name">Herbario / Visitante</field>
+        <field name="category_id" ref="module_herbario_category"/>
+        <field name="comment">Puede ver especímenes públicos en el sitio web</field>
+    </record>
+
+    <!-- Grupo: Estudiante (crear especímenes, agregar imágenes) -->
+    <record id="group_herbario_estudiante" model="res.groups">
+        <field name="name">Herbario / Estudiante</field>
+        <field name="category_id" ref="module_herbario_category"/>
+        <field name="implied_ids" eval="[(4, ref('group_herbario_visitante'))]"/>
+        <field name="comment">Puede crear especímenes y agregar imágenes</field>
+    </record>
+
+    <!-- Grupo: Investigador (CRUD completo excepto eliminar) -->
+    <record id="group_herbario_investigador" model="res.groups">
+        <field name="name">Herbario / Investigador</field>
+        <field name="category_id" ref="module_herbario_category"/>
+        <field name="implied_ids" eval="[(4, ref('group_herbario_estudiante'))]"/>
+        <field name="comment">Puede crear, editar y validar especímenes</field>
+    </record>
+
+    <!-- Grupo: Encargado (CRUD completo + administración) -->
+    <record id="group_herbario_encargado" model="res.groups">
+        <field name="name">Herbario / Encargado del Herbario</field>
+        <field name="category_id" ref="module_herbario_category"/>
+        <field name="implied_ids" eval="[(4, ref('group_herbario_investigador'))]"/>
+        <field name="comment">Control total sobre el herbario, puede eliminar registros</field>
+    </record>
+
+    <!-- Grupo: Administrador TI (acceso total + configuración) -->
+    <record id="group_herbario_admin_ti" model="res.groups">
+        <field name="name">Herbario / Administrador TI</field>
+        <field name="category_id" ref="module_herbario_category"/>
+        <field name="implied_ids" eval="[(4, ref('group_herbario_encargado'))]"/>
+        <field name="comment">Acceso total incluyendo configuración del sistema</field>
+    </record>
+
+    <!-- ==================== REGLAS DE REGISTRO (Record Rules) ==================== -->
+
+    <!-- Regla: Visitantes - Solo lectura de especímenes públicos -->
+    <record id="herbario_specimen_visitante_rule" model="ir.rule">
+        <field name="name">Visitante: Solo especímenes públicos</field>
+        <field name="model_id" ref="model_herbario_specimen"/>
+        <field name="domain_force">[('es_publico', '=', True), ('status', '=', 'activo')]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_visitante'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Regla: Estudiantes - Ver todos, editar solo los propios -->
+    <record id="herbario_specimen_estudiante_rule" model="ir.rule">
+        <field name="name">Estudiante: Editar solo especímenes propios</field>
+        <field name="model_id" ref="model_herbario_specimen"/>
+        <field name="domain_force">['|', ('created_by', '=', user.id), ('es_publico', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_estudiante'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Regla: Investigadores - Ver y editar todos excepto eliminar -->
+    <record id="herbario_specimen_investigador_rule" model="ir.rule">
+        <field name="name">Investigador: Ver y editar todos</field>
+        <field name="model_id" ref="model_herbario_specimen"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_investigador'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Regla: Encargado - Acceso total -->
+    <record id="herbario_specimen_encargado_rule" model="ir.rule">
+        <field name="name">Encargado: Acceso total</field>
+        <field name="model_id" ref="model_herbario_specimen"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_encargado'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Regla: Ubicaciones de recolección - Hereda permisos del espécimen -->
+    <record id="herbario_collection_site_estudiante_rule" model="ir.rule">
+        <field name="name">Estudiante: Ubicaciones de especímenes propios</field>
+        <field name="model_id" ref="model_herbario_collection_site"/>
+        <field name="domain_force">['|', ('specimen_id.created_by', '=', user.id), ('specimen_id.es_publico', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_estudiante'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="herbario_collection_site_investigador_rule" model="ir.rule">
+        <field name="name">Investigador: Todas las ubicaciones</field>
+        <field name="model_id" ref="model_herbario_collection_site"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_investigador'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Regla: Imágenes - Hereda permisos del espécimen -->
+    <record id="herbario_image_estudiante_rule" model="ir.rule">
+        <field name="name">Estudiante: Imágenes de especímenes propios</field>
+        <field name="model_id" ref="model_herbario_image"/>
+        <field name="domain_force">['|', ('specimen_id.created_by', '=', user.id), ('specimen_id.es_publico', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_estudiante'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="herbario_image_investigador_rule" model="ir.rule">
+        <field name="name">Investigador: Todas las imágenes</field>
+        <field name="model_id" ref="model_herbario_image"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_investigador'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Regla: QR Codes - Solo lectura para estudiantes -->
+    <record id="herbario_qr_estudiante_rule" model="ir.rule">
+        <field name="name">Estudiante: Ver QR de especímenes propios</field>
+        <field name="model_id" ref="model_herbario_qr_code"/>
+        <field name="domain_force">[('specimen_id.created_by', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_estudiante'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="herbario_qr_investigador_rule" model="ir.rule">
+        <field name="name">Investigador: Generar y gestionar QR</field>
+        <field name="model_id" ref="model_herbario_qr_code"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_investigador'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Regla: Historial - Solo lectura para todos -->
+    <record id="herbario_history_all_rule" model="ir.rule">
+        <field name="name">Todos: Ver historial</field>
+        <field name="model_id" ref="model_herbario_history_log"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_herbario_estudiante'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

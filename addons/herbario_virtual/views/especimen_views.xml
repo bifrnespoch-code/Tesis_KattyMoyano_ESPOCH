@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de árbol (lista) -->
+    <record id="view_especimen_tree" model="ir.ui.view">
+        <field name="name">herbario.especimen.tree</field>
+        <field name="model">herbario.especimen</field>
+        <field name="arch" type="xml">
+            <tree string="Especímenes del Herbario">
+                <field name="nombre_comun"/>
+                <field name="nombre_cientifico"/>
+                <field name="familia"/>
+                <field name="fecha_coleccion"/>
+                <field name="estado"/>
+                <field name="imagen" widget="image" class="oe_list_image"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de formulario -->
+    <record id="view_especimen_form" model="ir.ui.view">
+        <field name="name">herbario.especimen.form</field>
+        <field name="model">herbario.especimen</field>
+        <field name="arch" type="xml">
+            <form string="Especímen Botánico">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="nombre_comun"/>
+                            <field name="nombre_cientifico"/>
+                            <field name="familia"/>
+                        </group>
+                        <group>
+                            <field name="imagen" widget="image" class="oe_avatar"/>
+                            <field name="fecha_coleccion"/>
+                            <field name="ubicacion"/>
+                            <field name="estado"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Descripción">
+                            <field name="descripcion"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para el menú -->
+    <record id="action_especimen" model="ir.actions.act_window">
+        <field name="name">Especímenes</field>
+        <field name="res_model">herbario.especimen</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primer especímen botánico.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú principal -->
+    <menuitem id="menu_herbario_root" name="Herbario Virtual" sequence="10"/>
+    <menuitem id="menu_especimen" name="Especímenes" parent="menu_herbario_root"
+              action="action_especimen" sequence="10"/>
+</odoo>

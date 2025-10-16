@@ -1,0 +1,85 @@
+odoo-1  | 2025-10-01 23:34:18,955 1 INFO ? odoo: Odoo version 17.0-20250725 
+odoo-1  | 2025-10-01 23:34:18,955 1 INFO ? odoo: Using configuration file at /etc/odoo/odoo.conf 
+odoo-1  | 2025-10-01 23:34:18,956 1 INFO ? odoo: addons paths: ['/usr/lib/python3/dist-packages/odoo/addons', '/var/lib/odoo/addons/17.0', '/mnt/extra-addons'] 
+odoo-1  | 2025-10-01 23:34:18,956 1 INFO ? odoo: database: odoo@db:5432 
+odoo-1  | 2025-10-01 23:34:19,147 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at /usr/local/bin/wkhtmltopdf 
+odoo-1  | 2025-10-01 23:34:19,634 1 INFO ? odoo.service.server: HTTP service (werkzeug) running on c6229fe70344:8069 
+odoo-1  | 2025-10-01 23:34:21,896 1 INFO ? odoo.modules.loading: loading 1 modules... 
+odoo-1  | 2025-10-01 23:34:21,903 1 INFO ? odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+odoo-1  | 2025-10-01 23:34:22,120 1 WARNING ? odoo.modules.module: Missing `license` key in manifest for 'herbario_virtual', defaulting to LGPL-3 
+odoo-1  | 2025-10-01 23:34:22,124 1 INFO ? odoo.modules.loading: loading 95 modules... 
+odoo-1  | 2025-10-01 23:34:24,550 1 INFO ? odoo.modules.loading: 95 modules loaded in 2.43s, 0 queries (+0 extra) 
+odoo-1  | 2025-10-01 23:34:24,818 1 INFO ? odoo.modules.loading: Modules loaded. 
+odoo-1  | 2025-10-01 23:34:24,836 1 INFO ? odoo.modules.registry: Registry loaded in 3.084s 
+odoo-1  | 2025-10-01 23:34:24,857 1 INFO herbario2 odoo.addons.base.models.ir_http: Generating routing map for key 1 
+odoo-1  | 2025-10-01 23:34:25,576 1 WARNING herbario2 odoo.modules.module: Missing `license` key in manifest for 'herbario_virtual', defaulting to LGPL-3 
+odoo-1  | 2025-10-01 23:34:27,260 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:27] "GET / HTTP/1.1" 200 - 224 0.771 4.738
+odoo-1  | 2025-10-01 23:34:27,355 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:27] "GET / HTTP/1.1" 200 - 20 0.018 0.045
+odoo-1  | 2025-10-01 23:34:33,353 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:33] "GET /web HTTP/1.1" 200 - 48 0.057 0.761
+odoo-1  | 2025-10-01 23:34:34,373 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:34] "GET /bus/websocket_worker_bundle?v=17.0-1 HTTP/1.1" 304 - 4 0.009 0.028
+odoo-1  | 2025-10-01 23:34:34,567 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:34] "GET /web/image?model=res.users&field=avatar_128&id=2 HTTP/1.1" 304 - 16 0.071 0.048
+odoo-1  | 2025-10-01 23:34:34,598 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:34] "GET /websocket?version=17.0-1 HTTP/1.1" 101 - 1 0.003 0.019
+odoo-1  | 2025-10-01 23:34:34,658 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:34] "GET /web/manifest.webmanifest HTTP/1.1" 200 - 10 0.035 0.022
+odoo-1  | 2025-10-01 23:34:34,696 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:34] "POST /mail/init_messaging HTTP/1.1" 200 - 59 0.252 0.097
+odoo-1  | 2025-10-01 23:34:34,728 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:34] "POST /mail/load_message_failures HTTP/1.1" 200 - 4 0.007 0.011
+odoo-1  | 2025-10-01 23:34:34,938 1 INFO ? odoo.addons.bus.models.bus: Bus.loop listen imbus on db postgres 
+odoo-1  | 2025-10-01 23:34:36,582 1 WARNING ? odoo.modules.module: Missing `license` key in manifest for 'docente_snippet', defaulting to LGPL-3 
+odoo-1  | 2025-10-01 23:34:36,583 1 WARNING ? odoo.modules.module: Missing `license` key in manifest for 'docente_snippet', defaulting to LGPL-3 
+odoo-1  | 2025-10-01 23:34:36,605 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:36] "POST /web/dataset/call_kw/res.users/systray_get_activities HTTP/1.1" 200 - 4 0.010 2.199
+odoo-1  | 2025-10-01 23:34:36,625 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:36] "POST /web/action/load HTTP/1.1" 200 - 9 0.026 2.275
+odoo-1  | 2025-10-01 23:34:36,780 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:36] "POST /web/dataset/call_kw/ir.module.module/get_views HTTP/1.1" 200 - 47 0.063 0.060
+odoo-1  | 2025-10-01 23:34:36,816 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:36] "POST /web/dataset/call_kw/ir.module.module/search_panel_select_range HTTP/1.1" 200 - 1 0.001 0.012
+odoo-1  | 2025-10-01 23:34:36,888 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:36] "POST /web/dataset/call_kw/ir.module.module/search_panel_select_range HTTP/1.1" 200 - 39 0.041 0.038
+odoo-1  | 2025-10-01 23:34:36,969 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:36] "POST /web/dataset/call_kw/ir.module.module/web_search_read HTTP/1.1" 200 - 4 0.010 0.144
+odoo-1  | 2025-10-01 23:34:38,785 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:38] "POST /web/action/load HTTP/1.1" 200 - 8 0.007 0.013
+odoo-1  | 2025-10-01 23:34:38,838 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:38] "POST /web/dataset/call_kw/base.module.update/get_views HTTP/1.1" 200 - 9 0.010 0.015
+odoo-1  | 2025-10-01 23:34:38,869 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:38] "POST /web/dataset/call_kw/base.module.update/onchange HTTP/1.1" 200 - 2 0.004 0.010
+odoo-1  | 2025-10-01 23:34:38,872 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:38] "GET /web/service-worker.js HTTP/1.1" 200 - 1 0.001 0.012
+odoo-1  | 2025-10-01 23:34:40,175 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:40] "POST /web/dataset/call_kw/base.module.update/web_save HTTP/1.1" 200 - 5 0.019 0.012
+odoo-1  | 2025-10-01 23:34:40,197 1 INFO herbario2 odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user admin #2 via 172.19.0.1 
+odoo-1  | 2025-10-01 23:34:42,335 1 INFO herbario2 odoo.modules.registry: Caches invalidated, signaling through the database: ['templates'] 
+odoo-1  | 2025-10-01 23:34:42,338 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:34:42] "POST /web/dataset/call_button HTTP/1.1" 200 - 1697 1.342 0.807
+odoo-1  | 2025-10-01 23:37:29,999 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:29] "POST /web/dataset/call_kw/base.module.update/onchange HTTP/1.1" 200 - 1 0.001 0.007
+odoo-1  | 2025-10-01 23:37:31,162 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:31] "POST /web/dataset/call_kw/base.module.update/web_save HTTP/1.1" 200 - 3 0.004 0.012
+odoo-1  | 2025-10-01 23:37:31,184 1 INFO herbario2 odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user admin #2 via 172.19.0.1 
+odoo-1  | 2025-10-01 23:37:33,193 1 INFO herbario2 odoo.modules.registry: Caches invalidated, signaling through the database: ['templates'] 
+odoo-1  | 2025-10-01 23:37:33,195 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:33] "POST /web/dataset/call_button HTTP/1.1" 200 - 1583 1.191 0.828
+odoo-1  | 2025-10-01 23:37:36,206 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:36] "POST /web/action/load HTTP/1.1" 200 - 8 0.006 0.013
+odoo-1  | 2025-10-01 23:37:36,250 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:36] "POST /web/dataset/call_kw/base.module.upgrade/get_views HTTP/1.1" 200 - 7 0.008 0.015
+odoo-1  | 2025-10-01 23:37:36,269 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:36] "POST /web/dataset/call_kw/base.module.upgrade/onchange HTTP/1.1" 200 - 2 0.002 0.005
+odoo-1  | 2025-10-01 23:37:37,293 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:37] "POST /web/dataset/call_kw/base.module.upgrade/web_save HTTP/1.1" 200 - 5 0.017 0.011
+odoo-1  | 2025-10-01 23:37:37,310 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:37] "POST /web/dataset/call_button HTTP/1.1" 200 - 1 0.001 0.005
+odoo-1  | 2025-10-01 23:37:37,426 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:37] "GET /web?reload=true HTTP/1.1" 200 - 21 0.019 0.052
+odoo-1  | 2025-10-01 23:37:38,272 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "POST /web/action/load HTTP/1.1" 200 - 9 0.019 0.057
+odoo-1  | 2025-10-01 23:37:38,294 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "POST /web/dataset/call_kw/res.users/systray_get_activities HTTP/1.1" 200 - 2 0.006 0.019
+odoo-1  | 2025-10-01 23:37:38,297 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "GET /bus/websocket_worker_bundle?v=17.0-1 HTTP/1.1" 304 - 3 0.014 0.081
+odoo-1  | 2025-10-01 23:37:38,350 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "GET /web/image?model=res.users&field=avatar_128&id=2 HTTP/1.1" 304 - 9 0.017 0.030
+odoo-1  | 2025-10-01 23:37:38,407 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "POST /mail/init_messaging HTTP/1.1" 200 - 33 0.073 0.104
+odoo-1  | 2025-10-01 23:37:38,410 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "GET /websocket?version=17.0-1 HTTP/1.1" 101 - 1 0.001 0.017
+odoo-1  | 2025-10-01 23:37:38,443 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "POST /web/dataset/call_kw/ir.module.module/get_views HTTP/1.1" 200 - 17 0.039 0.079
+odoo-1  | 2025-10-01 23:37:38,458 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "GET /web/manifest.webmanifest HTTP/1.1" 200 - 7 0.013 0.019
+odoo-1  | 2025-10-01 23:37:38,458 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "POST /mail/load_message_failures HTTP/1.1" 200 - 3 0.008 0.017
+odoo-1  | 2025-10-01 23:37:38,476 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "POST /web/dataset/call_kw/ir.module.module/search_panel_select_range HTTP/1.1" 200 - 1 0.001 0.012
+odoo-1  | 2025-10-01 23:37:38,531 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "POST /web/dataset/call_kw/ir.module.module/search_panel_select_range HTTP/1.1" 200 - 38 0.037 0.028
+odoo-1  | 2025-10-01 23:37:38,565 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:38] "POST /web/dataset/call_kw/ir.module.module/web_search_read HTTP/1.1" 200 - 3 0.006 0.090
+odoo-1  | 2025-10-01 23:37:40,259 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:40] "GET /web/service-worker.js HTTP/1.1" 200 - 1 0.001 0.006
+odoo-1  | 2025-10-01 23:37:47,573 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:47] "POST /web/dataset/call_kw/ir.module.module/search_panel_select_range HTTP/1.1" 200 - 38 0.050 0.058
+odoo-1  | 2025-10-01 23:37:47,597 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:47] "POST /web/dataset/call_kw/ir.module.module/web_search_read HTTP/1.1" 200 - 2 0.003 0.008
+odoo-1  | 2025-10-01 23:37:49,322 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:49] "POST /web/dataset/call_kw/ir.module.module/search_panel_select_range HTTP/1.1" 200 - 38 0.045 0.042
+odoo-1  | 2025-10-01 23:37:49,373 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:49] "POST /web/dataset/call_kw/ir.module.module/web_search_read HTTP/1.1" 200 - 3 0.007 0.031
+odoo-1  | 2025-10-01 23:37:51,620 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:51] "POST /web/dataset/call_kw/ir.module.module/search_panel_select_range HTTP/1.1" 200 - 38 0.046 0.045
+odoo-1  | 2025-10-01 23:37:51,649 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:51] "POST /web/dataset/call_kw/ir.module.module/web_search_read HTTP/1.1" 200 - 2 0.005 0.009
+odoo-1  | 2025-10-01 23:37:52,931 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:52] "POST /web/dataset/call_kw/ir.module.module/search_panel_select_range HTTP/1.1" 200 - 38 0.038 0.035
+odoo-1  | 2025-10-01 23:37:52,981 1 INFO herbario2 werkzeug: 172.19.0.1 - - [01/Oct/2025 23:37:52] "POST /web/dataset/call_kw/ir.module.module/web_search_read HTTP/1.1" 200 - 3 0.007 0.030
+odoo-1  | 2025-10-01 23:39:20,135 1 INFO herbario2 odoo.addons.base.models.ir_cron: Starting job `Notification: Send scheduled message notifications`. 
+odoo-1  | 2025-10-01 23:39:20,150 1 INFO herbario2 odoo.addons.base.models.ir_cron: Job done: `Notification: Send scheduled message notifications` (0.014s). 
+odoo-1  | 2025-10-01 23:39:20,163 1 INFO herbario2 odoo.addons.base.models.ir_cron: Starting job `Mail: Email Queue Manager`. 
+odoo-1  | 2025-10-01 23:39:20,177 1 INFO herbario2 odoo.addons.base.models.ir_cron: Job done: `Mail: Email Queue Manager` (0.014s). 
+odoo-1  | 2025-10-01 23:39:20,190 1 INFO herbario2 odoo.addons.base.models.ir_cron: Starting job `Snailmail: process letters queue`. 
+odoo-1  | 2025-10-01 23:39:20,205 1 INFO herbario2 odoo.addons.base.models.ir_cron: Job done: `Snailmail: process letters queue` (0.016s). 
+odoo-1  | 2025-10-01 23:39:20,222 1 INFO herbario2 odoo.addons.base.models.ir_cron: Starting job `SMS: SMS Queue Manager`. 
+odoo-1  | 2025-10-01 23:39:20,235 1 INFO herbario2 odoo.addons.base.models.ir_cron: Job done: `SMS: SMS Queue Manager` (0.012s). 
+odoo-1  | 2025-10-01 23:39:20,254 1 INFO herbario2 odoo.addons.base.models.ir_cron: Starting job `Partner Autocomplete: Sync with remote DB`. 
+odoo-1  | 2025-10-01 23:39:20,267 1 INFO herbario2 odoo.addons.base.models.ir_cron: Job done: `Partner Autocomplete: Sync with remote DB` (0.013s). 
+odoo-1  | 2025-10-01 23:39:20,291 1 INFO herbario2 odoo.addons.base.models.ir_cron: Starting job `Digest Emails`. 
+odoo-1  | 2025-10-01 23:39:20,303 1 INFO herbario2 odoo.addons.base.models.ir_cron: Job done: `Digest Emails` (0.012s). 
